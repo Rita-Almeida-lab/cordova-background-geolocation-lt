@@ -71,6 +71,8 @@
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
 
         <resource-file src="src/android/libs/com/transistorsoft/tslocationmanager" target="../../libs/com/transistorsoft/tslocationmanager" />
+        
+         <resource-file  src="src/android/BackgroundGeolocationHeadlessTaskCustom.java"  target="src/com/transistorsoft/cordova/bggeo/BackgroundGeolocationHeadlessTaskCustom.java" />
 
         <resource-file src="src/android/libs/com/transistorsoft/tslocationmanager-reverse" target="../../libs/com/transistorsoft/tslocationmanager-reverse" />
 
