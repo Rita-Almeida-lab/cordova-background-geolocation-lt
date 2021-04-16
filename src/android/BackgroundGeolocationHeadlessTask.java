@@ -59,7 +59,7 @@ public class BackgroundGeolocationHeadlessTask  {
         } else if (name.equals(BackgroundGeolocation.EVENT_GEOFENCE)) {
             GeofenceEvent geofenceEvent = event.getGeofenceEvent();
         } else if (name.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
-            HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent();
+            HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent(
 			TSCurrentPositionRequest request = new TSCurrentPositionRequest.Builder(event.getContext())
                     .setPersist(true)       // <-- yes, persist to database
                     .setSamples(1)          // <-- fetch 1 location sample
@@ -77,6 +77,7 @@ public class BackgroundGeolocationHeadlessTask  {
 
                 BackgroundGeolocation bgGeo = BackgroundGeolocation.getInstance(event.getContext());
                 bgGeo.getCurrentPosition(request);
+		    );
         } else if (name.equals(BackgroundGeolocation.EVENT_ENABLEDCHANGE)) {
             boolean enabled = event.getEnabledChangeEvent();
         } else if (name.equals(BackgroundGeolocation.EVENT_CONNECTIVITYCHANGE)) {
