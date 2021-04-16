@@ -1,36 +1,67 @@
 package com.transistorsoft.cordova.bggeo;
 
-import android.content.Context;
-import android.util.Log;
+import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.transistorsoft.locationmanager.adapter.BackgroundGeolocation;
+import com.transistorsoft.locationmanager.adapter.callback.TSLocationCallback;
+import com.transistorsoft.locationmanager.event.ActivityChangeEvent;
+import com.transistorsoft.locationmanager.event.GeofenceEvent;
+import com.transistorsoft.locationmanager.event.GeofencesChangeEvent;
+import com.transistorsoft.locationmanager.event.ConnectivityChangeEvent;
+import com.transistorsoft.locationmanager.event.HeadlessEvent;
+import com.transistorsoft.locationmanager.event.HeartbeatEvent;
+import com.transistorsoft.locationmanager.event.MotionChangeEvent;
+import com.transistorsoft.locationmanager.event.LocationProviderChangeEvent;
+import com.transistorsoft.locationmanager.http.HttpResponse;
+import com.transistorsoft.locationmanager.location.TSCurrentPositionRequest;
+import com.transistorsoft.locationmanager.location.TSLocation;
+import com.transistorsoft.locationmanager.logger.TSLog;
 
-/**
- * BackgroundGeolocationHeadlessTask
- * This component allows you to receive events from the BackgroundGeolocation plugin 
- * in the native Android environment while your app has been *terminated*,
- */
-public class BackgroundGeolocationHeadlessTask extends HeadlessTask implements HeadlessTask.Receiver {
-    /**
-     * @param context
-     * @param event [location|motionchange|providerchange|activitychange|http|heartbeat|geofence|schedule|boot|terminate
-     * @param params Same params signtature provived to Javascript events.
-     */
-    @Override
-    public void onReceive(Context context, String event, JSONObject params) {
-        Log.d("MyApp", "BackgroundGeolocationHeadlessTask: " + params.toString());
+public class BackgroundGeolocationHeadlessTask  {
 
-        // You can get a reference to the BackgroundGeolocation native API like this:
-        BackgroundGeolocation bgGeo = BackgroundGeolocation.getInstance(context);
+    @Subscribe
+    public void onHeadlessTask(HeadlessEvent event) {
 
-        // Create custom logic based upon the received event
-        if (event.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
-            // A heartbeat event has been received.
-		HeadlessTask.postNotification(context, event, params);
-        } else if (event.equals(BackgroundGeolocation.EVENT_LOCATION)) {
-            // A location event has been received.
+        String name = event.getName();
+        TSLog.logger.debug("\uD83D\uDC80  event (CUSTOM IMPLEMENTATION): " + event.getName());
+        TSLog.logger.debug("- event: " + event.getEvent());
+
+        if (name.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
+            // [Optional] Build extras object.
+            JSONObject extras = new JSONObject();
+            try {
+                extras.put("foo", "bar");
+            } catch (JSONException e) {
+                // Won't happen.
+            }
+
+            // Build request object.
+            TSCurrentPositionRequest.Builder request = new TSCurrentPositionRequest.Builder(event.getContext())
+                .setPersist(true)  // <-- optional
+                .setMaximumAge(0)  // <-- optional
+                .setExtras(extras) // <-- optional 
+                .setTimeout(60)    // <-- optional
+                .setSamples(3)     // <-- optional 
+                .setDesiredAccuracy(10)  // <-- optional
+                .setCallback(new TSLocationCallback() {
+                    @Override
+                    public void onLocation(TSLocation tsLocation) {
+                        // Location received callback.
+                        TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
+                    }
+                    @Override
+                    public void onError(Integer error) {
+                        // Location error callback.
+                        TSLog.logger.error("*** getCurrentPosition ERROR: " + error.toString());
+                    }
+                });
+
+            // Initiate the request.
+            BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
+
+            HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent();
         }
-        // Important: Be sure to execute #finish when your task is complete.  
-        // This signals the native code that your task is complete.
-        finish();
     }
+}
