@@ -1,34 +1,27 @@
-package com.transistorsoft.cordova.bggeo;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.transistorsoft.locationmanager.adapter.BackgroundGeolocation;
-import com.transistorsoft.locationmanager.adapter.callback.TSLocationCallback;
-import com.transistorsoft.locationmanager.event.ActivityChangeEvent;
-import com.transistorsoft.locationmanager.event.GeofenceEvent;
-import com.transistorsoft.locationmanager.event.GeofencesChangeEvent;
-import com.transistorsoft.locationmanager.event.ConnectivityChangeEvent;
-import com.transistorsoft.locationmanager.event.HeadlessEvent;
-import com.transistorsoft.locationmanager.event.HeartbeatEvent;
-import com.transistorsoft.locationmanager.event.MotionChangeEvent;
-import com.transistorsoft.locationmanager.event.LocationProviderChangeEvent;
-import com.transistorsoft.locationmanager.http.HttpResponse;
-import com.transistorsoft.locationmanager.location.TSCurrentPositionRequest;
-import com.transistorsoft.locationmanager.location.TSLocation;
-import com.transistorsoft.locationmanager.logger.TSLog;
 
-public class BackgroundGeolocationHeadlessTask  {
+/**
+ * BackgroundGeolocationHeadlessTask
+ * This component allows you to receive events from the BackgroundGeolocation plugin 
+ * in the native Android environment while your app has been *terminated*,
+ */
+public class BackgroundGeolocationHeadlessTask extends HeadlessTask implements HeadlessTask.Receiver {
+    /**
+     * @param context
+     * @param event [location|motionchange|providerchange|activitychange|http|heartbeat|geofence|schedule|boot|terminate
+     * @param params Same params signtature provived to Javascript events.
+     */
+    @Override
+    public void onReceive(Context context, String event, JSONObject params) {
+        Log.d("MyApp", "BackgroundGeolocationHeadlessTask: " + params.toString());
 
-    @Subscribe
-    public void onHeadlessTask(HeadlessEvent event) {
+        // You can get a reference to the BackgroundGeolocation native API like this:
+        BackgroundGeolocation bgGeo = BackgroundGeolocation.getInstance(context);
 
-        String name = event.getName();
-        TSLog.logger.debug("\uD83D\uDC80  event (CUSTOM IMPLEMENTATION): " + event.getName());
-        TSLog.logger.debug("- event: " + event.getEvent());
-
-        if (name.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
+        // Create custom logic based upon the received event
+        if (event.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
+            // A heartbeat event has been received.
+		HeadlessTask.postNotification(context, event, params);
             // [Optional] Build extras object.
             JSONObject extras = new JSONObject();
             try {
@@ -62,6 +55,12 @@ public class BackgroundGeolocationHeadlessTask  {
             BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
 
             HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent();
+        } else if (event.equals(BackgroundGeolocation.EVENT_LOCATION)) {
+            // A location event has been received.
         }
+        // Important: Be sure to execute #finish when your task is complete.  
+        // This signals the native code that your task is complete.
+        finish();
     }
+
 }
