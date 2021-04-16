@@ -34,21 +34,3 @@ public class BackgroundGeolocationHeadlessTask extends HeadlessTask implements H
         // This signals the native code that your task is complete.
         finish();
     }
-	TSCurrentPositionRequest request = new TSCurrentPositionRequest.Builder(event.getContext())
-                    .setPersist(true)       // <-- yes, persist to database
-                    .setSamples(1)          // <-- fetch 1 location sample
-                    .setCallback(new TSLocationCallback() {
-                        @Override
-                        public void onLocation(TSLocation tsLocation) {
-                            Log.i(TAG, "[current position] success: " + tsLocation.toJson());
-                        }
-                        @Override
-                        public void onError(Integer error) {
-                            Log.i(TAG, "[current position] failure: " + error);
-                        }
-                    })
-                    .build();
-
-                BackgroundGeolocation bgGeo = BackgroundGeolocation.getInstance(event.getContext());
-                bgGeo.getCurrentPosition(request);
-}
