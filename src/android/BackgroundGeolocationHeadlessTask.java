@@ -1,3 +1,8 @@
+package com.transistorsoft.cordova.bggeo;
+
+import android.content.Context;
+import android.util.Log;
+import org.json.JSONObject;
 import com.transistorsoft.locationmanager.adapter.BackgroundGeolocation;
 
 /**
@@ -21,40 +26,6 @@ public class BackgroundGeolocationHeadlessTask extends HeadlessTask implements H
         // Create custom logic based upon the received event
         if (event.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
             // A heartbeat event has been received.
-		HeadlessTask.postNotification(context, event, params);
-            // [Optional] Build extras object.
-            JSONObject extras = new JSONObject();
-            try {
-                extras.put("foo", "bar");
-            } catch (JSONException e) {
-                // Won't happen.
-            }
-
-            // Build request object.
-            TSCurrentPositionRequest.Builder request = new TSCurrentPositionRequest.Builder(event.getContext())
-                .setPersist(true)  // <-- optional
-                .setMaximumAge(0)  // <-- optional
-                .setExtras(extras) // <-- optional 
-                .setTimeout(60)    // <-- optional
-                .setSamples(3)     // <-- optional 
-                .setDesiredAccuracy(10)  // <-- optional
-                .setCallback(new TSLocationCallback() {
-                    @Override
-                    public void onLocation(TSLocation tsLocation) {
-                        // Location received callback.
-                        TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
-                    }
-                    @Override
-                    public void onError(Integer error) {
-                        // Location error callback.
-                        TSLog.logger.error("*** getCurrentPosition ERROR: " + error.toString());
-                    }
-                });
-
-            // Initiate the request.
-            BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
-
-            HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent();
         } else if (event.equals(BackgroundGeolocation.EVENT_LOCATION)) {
             // A location event has been received.
         }
@@ -62,5 +33,4 @@ public class BackgroundGeolocationHeadlessTask extends HeadlessTask implements H
         // This signals the native code that your task is complete.
         finish();
     }
-
 }
