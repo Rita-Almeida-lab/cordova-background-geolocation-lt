@@ -27,6 +27,9 @@ public class BackgroundGeolocationHeadlessTask  {
         String name = event.getName();
         TSLog.logger.debug("\uD83D\uDC80  event (CUSTOM IMPLEMENTATION): " + event.getName());
         TSLog.logger.debug("- event: " + event.getEvent());
+        
+        // Get reference to plugin singleton
+           BackgroundGeolocation bgGeo = BackgroundGeolocation.getInstance(context);
 
         if (name.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
             // [Optional] Build extras object.
