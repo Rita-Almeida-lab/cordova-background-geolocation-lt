@@ -74,8 +74,7 @@
         
          <resource-file src="src/android/BackgroundGeolocationHeadlessTask.java" target="app/src/main/java/com/transistorsoft/cordova/bggeo/BackgroundGeolocationHeadlessTask.java" />
 
-        <resource-file src="src/android/BackgroundFetchHeadlessTask.java" target="app/src/main/java/com/transistorsoft/cordova/backgroundfetch/BackgroundFetchHeadlessTask.java" />
-        
+               
         <resource-file src="src/android/libs/com/transistorsoft/tslocationmanager-reverse" target="../../libs/com/transistorsoft/tslocationmanager-reverse" />
 
         <source-file src="src/android/CDVBackgroundGeolocation.java" target-dir="src/com/transistorsoft/cordova/bggeo" />
