@@ -127,6 +127,9 @@ public class BackgroundGeolocationHeadlessTask {
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                     conn.setRequestProperty("Accept","application/json");
+                    conn.setRequestProperty("DevicePlatform", "android");
+                    conn.setRequestProperty("DeviceIdentifier", "121");
+                    conn.setRequestProperty("DeviceIdentifier", "13");
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
 
