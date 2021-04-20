@@ -85,6 +85,7 @@ public class BackgroundGeolocationHeadlessTask {
             TSConfig config = TSConfig.getInstance(context);
             String url = config.getUrl();
             JSONObject headers =config.getHeaders();
+            headers.toString();
 
 
             /* Get last registred location (to improve)*/
@@ -98,6 +99,8 @@ public class BackgroundGeolocationHeadlessTask {
 
             JSONObject params = new JSONObject();
             params.put("heartbeat", data);
+            
+            
 
 
             /* Open new thread to send a post request to the API with the data */
@@ -117,7 +120,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
-    public void sendPost(String urlAddress, String jsonString) {
+    public void sendPost(String urlAddress, String jsonString, String headers) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -127,9 +130,9 @@ public class BackgroundGeolocationHeadlessTask {
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                     conn.setRequestProperty("Accept","application/json");
-                    conn.setRequestProperty("DevicePlatform", headers.get("DevicePlatform"));
-                    conn.setRequestProperty("DeviceIdentifier", headers.get("DeviceIdentifier"));
-                    conn.setRequestProperty("Android-version", headers.get("Android-version"));
+                    conn.setRequestProperty("DevicePlatform", headers);
+                    conn.setRequestProperty("DeviceIdentifier", headers);
+                    conn.setRequestProperty("Android-version", headers);
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
 
