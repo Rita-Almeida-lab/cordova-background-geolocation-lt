@@ -85,7 +85,7 @@ public class BackgroundGeolocationHeadlessTask {
             TSConfig config = TSConfig.getInstance(context);
             String url = config.getUrl();
             JSONObject heads = config.getHeaders();
-            String DevicePlatform = json.getJSONObject("heads").getString("slogan");
+            String DevicePlatform = json.getJSONObject("heads").getString("DevicePlatform");
            
 
 
