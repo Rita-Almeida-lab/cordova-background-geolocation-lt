@@ -104,7 +104,7 @@ public class BackgroundGeolocationHeadlessTask {
 
 
             /* Open new thread to send a post request to the API with the data */
-            sendPost(url,params.toString());
+            sendPost(url,params.toString(),heads.toString());
 
 
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
@@ -120,7 +120,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
-    public void sendPost(String urlAddress, String jsonString) {
+    public void sendPost(String urlAddress, String jsonString, String headers) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -130,7 +130,7 @@ public class BackgroundGeolocationHeadlessTask {
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                     conn.setRequestProperty("Accept","application/json");
-                    conn.setRequestProperty("DevicePlatform",  heads.toString());
+                    conn.setRequestProperty("DevicePlatform", headers);
                     conn.setRequestProperty("DeviceIdentifier", headers);
                     conn.setRequestProperty("Android-version", headers);
                     conn.setDoOutput(true);
