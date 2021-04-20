@@ -84,7 +84,7 @@ public class BackgroundGeolocationHeadlessTask {
             /* Get Config */
             TSConfig config = TSConfig.getInstance(context);
             String url = config.getUrl();
-
+            JSONObject headers =config.getHeaders();
 
 
             /* Get last registred location (to improve)*/
