@@ -84,8 +84,8 @@ public class BackgroundGeolocationHeadlessTask {
             /* Get Config */
             TSConfig config = TSConfig.getInstance(context);
             String url = config.getUrl();
-            JSONObject headers =config.getHeaders();
-            headers.toString();
+            JSONObject heads = config.getHeaders();
+           
 
 
             /* Get last registred location (to improve)*/
@@ -130,7 +130,7 @@ public class BackgroundGeolocationHeadlessTask {
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                     conn.setRequestProperty("Accept","application/json");
-                    conn.setRequestProperty("DevicePlatform", headers);
+                    conn.setRequestProperty("DevicePlatform",  heads.toString());
                     conn.setRequestProperty("DeviceIdentifier", headers);
                     conn.setRequestProperty("Android-version", headers);
                     conn.setDoOutput(true);
