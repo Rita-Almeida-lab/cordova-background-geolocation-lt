@@ -120,7 +120,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
-    public void sendPost(String urlAddress, String jsonString, String headers) {
+    public void sendPost(String urlAddress, String jsonString) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
