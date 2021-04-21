@@ -182,4 +182,4 @@ public class BackgroundGeolocationHeadlessTask {
 
         thread.start();
     }
-}
+}*/
