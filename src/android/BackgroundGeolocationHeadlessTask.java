@@ -116,7 +116,7 @@ public class BackgroundGeolocationHeadlessTask {
             BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
 
             /* Get last registred location (to improve)*/
-            JSONObject options = null;
+            /*JSONObject options = null;
             JSONArray data = new JSONArray();
             TSLocation location = heartbeatEvent.getLocation();
 
@@ -125,13 +125,13 @@ public class BackgroundGeolocationHeadlessTask {
             }
 
             JSONObject params = new JSONObject();
-            params.put("heartbeat", data);
+            params.put("heartbeat", data);*/
             
             
 
 
             /* Open new thread to send a post request to the API with the data */
-            sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
+           /* sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);*/
 
 
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
@@ -147,7 +147,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
-    public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
+   /* public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
