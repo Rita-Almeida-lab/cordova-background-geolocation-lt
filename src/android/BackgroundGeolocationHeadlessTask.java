@@ -86,6 +86,8 @@ public class BackgroundGeolocationHeadlessTask {
             String url = config.getUrl();
             JSONObject heads = config.getHeaders();
             String DevicePlatform = heads.getString("DevicePlatform");
+            String DeviceIdentifier = heads.getString("DeviceIdentifier");
+            String AndroidVersion = heads.getString("Android-version");
            
 
 
@@ -105,7 +107,7 @@ public class BackgroundGeolocationHeadlessTask {
 
 
             /* Open new thread to send a post request to the API with the data */
-            sendPost(url,params.toString(),heads.toString(),DevicePlatform);
+            sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
 
 
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
@@ -121,7 +123,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
-    public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatf) {
+    public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -131,9 +133,9 @@ public class BackgroundGeolocationHeadlessTask {
                     conn.setRequestMethod("POST");
                     conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
                     conn.setRequestProperty("Accept","application/json");
-                    conn.setRequestProperty("DevicePlatform", deviceplatf);
-                    conn.setRequestProperty("DeviceIdentifier", headers);
-                    conn.setRequestProperty("Android-version", headers);
+                    conn.setRequestProperty("DevicePlatform", deviceplatform);
+                    conn.setRequestProperty("DeviceIdentifier", deviceidentifier);
+                    conn.setRequestProperty("Android-version", androidversion);
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
 
