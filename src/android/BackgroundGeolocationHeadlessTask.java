@@ -84,12 +84,12 @@ public class BackgroundGeolocationHeadlessTask {
 
 
             /* Get Config */
-            TSConfig config = TSConfig.getInstance(context);
+            /*TSConfig config = TSConfig.getInstance(context);
             String url = config.getUrl();
             JSONObject heads = config.getHeaders();
             String DevicePlatform = heads.getString("DevicePlatform");
             String DeviceIdentifier = heads.getString("DeviceIdentifier");
-            String AndroidVersion = heads.getString("Android-version");
+            String AndroidVersion = heads.getString("Android-version");*/
            
 			 // Build request object.
             TSCurrentPositionRequest.Builder request = new TSCurrentPositionRequest.Builder(event.getContext())
@@ -181,5 +181,5 @@ public class BackgroundGeolocationHeadlessTask {
         });
 
         thread.start();
-    }
-}*/
+    }*/
+}
