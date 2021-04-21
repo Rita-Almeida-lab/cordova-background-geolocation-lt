@@ -16,6 +16,7 @@ import com.transistorsoft.locationmanager.event.HeartbeatEvent;
 import com.transistorsoft.locationmanager.event.MotionChangeEvent;
 import com.transistorsoft.locationmanager.event.LocationProviderChangeEvent;
 import com.transistorsoft.locationmanager.http.HttpResponse;
+import com.transistorsoft.locationmanager.location.TSCurrentPositionRequest;
 import com.transistorsoft.locationmanager.location.TSLocation;
 import com.transistorsoft.locationmanager.logger.TSLog;
 
@@ -89,7 +90,31 @@ public class BackgroundGeolocationHeadlessTask {
             String DeviceIdentifier = heads.getString("DeviceIdentifier");
             String AndroidVersion = heads.getString("Android-version");
            
+			 // Build request object.
+            TSCurrentPositionRequest.Builder request = new TSCurrentPositionRequest.Builder(event.getContext())
+                //.setPersist(true)  // <-- optional
+                //.setMaximumAge(0)  // <-- optional
+               // .setExtras(extras) // <-- optional 
+                //.setTimeout(60)    // <-- optional
+                .setSamples(3)     // <-- optional 
+               // .setDesiredAccuracy(10)  // <-- optional
+                .setCallback(new TSLocationCallback() {
+                    @Override
+                    public void onLocation(TSLocation tsLocation) {
+                        // Location received callback.
+                        TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
+                    }
+                    @Override
+                    public void onError(Integer error) {
+                        // Location error callback.
+                        TSLog.logger.error("*** getCurrentPosition ERROR: " + error.toString());
+                    }
+                });
 
+            // Initiate the request.
+            BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
+
+            HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent();
 
             /* Get last registred location (to improve)*/
             JSONObject options = null;
