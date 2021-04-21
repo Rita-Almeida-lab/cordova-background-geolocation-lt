@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.transistorsoft.locationmanager.adapter.BackgroundGeolocation;
+import com.transistorsoft.locationmanager.adapter.callback.TSLocationCallback;
 import com.transistorsoft.locationmanager.adapter.TSConfig;
 import com.transistorsoft.locationmanager.event.ActivityChangeEvent;
 import com.transistorsoft.locationmanager.event.GeofenceEvent;
