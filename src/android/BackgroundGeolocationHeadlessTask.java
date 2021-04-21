@@ -115,8 +115,6 @@ public class BackgroundGeolocationHeadlessTask {
             // Initiate the request.
             BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
 
-            HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent();
-
             /* Get last registred location (to improve)*/
             JSONObject options = null;
             JSONArray data = new JSONArray();
