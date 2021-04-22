@@ -115,7 +115,7 @@ public class BackgroundGeolocationHeadlessTask {
 
 
             /* Open new thread to send a post request to the API with the data */
-          sendPost(url,Location.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
+          sendPost(url,Location.toJson(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
 
                     /*@Override
                     public void onLocation(TSLocation tsLocation) {
