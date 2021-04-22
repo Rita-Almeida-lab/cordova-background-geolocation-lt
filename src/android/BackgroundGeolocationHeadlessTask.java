@@ -100,16 +100,24 @@ public class BackgroundGeolocationHeadlessTask {
                 .setSamples(3)     // <-- optional 
                // .setDesiredAccuracy(10)  // <-- optional
                 .setCallback(new TSLocationCallback() {
-					
-					      if ( TSLocation tsLocation != null) {
+			
+			  /* Get last registred location (to improve)*/
+            JSONObject options = null;
+            JSONArray data = new JSONArray();
+            TSLocation location = LocationEvent.getLocation();
+            if (location != null) {
                 data.put(location.toJson());
             }
             JSONObject params = new JSONObject();
             params.put("heartbeat", data);
             
-                        /* Open new thread to send a post request to the API with the data */
-            sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
-                   /* @Override
+            
+
+
+            /* Open new thread to send a post request to the API with the data */
+          sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
+
+                    /*@Override
                     public void onLocation(TSLocation tsLocation) {
                         // Location received callback.
                         TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
@@ -119,18 +127,12 @@ public class BackgroundGeolocationHeadlessTask {
                         // Location error callback.
                         TSLog.logger.error("*** getCurrentPosition ERROR: " + error.toString());
                     }*/
-					
                 });
 
             // Initiate the request.
             BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
 
-            /* Get last registred location (to improve)*/
-            /*JSONObject options = null;
-            JSONArray data = new JSONArray();
-            TSLocation location = heartbeatEvent.getLocation();*/
-      
-
+          
 
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
             String buttonId = event.getNotificationEvent();
@@ -145,7 +147,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
-    public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
+ public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
