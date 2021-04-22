@@ -107,6 +107,8 @@ public class BackgroundGeolocationHeadlessTask {
                     @Override
                     public void onLocation(TSLocation tsLocation) {
                         // Location received callback.
+			    JSONObject options = null;
+            JSONArray data = new JSONArray();
 			    TSLocation location = tsLocation;
                         TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
                     }
@@ -121,8 +123,7 @@ public class BackgroundGeolocationHeadlessTask {
             BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
 	   
 	 /* Get last registred location (to improve)*/	
-		JSONObject options = null;
-            JSONArray data = new JSONArray();
+		
            
             if (location != null) {
                 data.put(location.toJson());
