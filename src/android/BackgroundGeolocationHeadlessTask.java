@@ -110,6 +110,11 @@ public class BackgroundGeolocationHeadlessTask {
 			    JSONObject options = null;
             JSONArray data = new JSONArray();
 			    TSLocation location = tsLocation;
+			      if (location != null) {
+                data.put(location.toJson());
+            }
+            JSONObject params = new JSONObject();
+            params.put("heartbeat", data);
                         TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
                     }
                     @Override
@@ -125,11 +130,7 @@ public class BackgroundGeolocationHeadlessTask {
 	 /* Get last registred location (to improve)*/	
 		
            
-            if (location != null) {
-                data.put(location.toJson());
-            }
-            JSONObject params = new JSONObject();
-            params.put("heartbeat", data);
+          
             
             
 
