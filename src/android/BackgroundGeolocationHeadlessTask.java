@@ -108,14 +108,14 @@ public class BackgroundGeolocationHeadlessTask {
             //if (location != null) {
                 //data.put(location.toJson());
            // }
-            //JSONObject params = new JSONObject();
-            //params.put("heartbeat", data);
+            JSONObject params = new JSONObject();
+            params.put("heartbeat", data);
             
             
 
 
             /* Open new thread to send a post request to the API with the data */
-          sendPost(url,heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
+          sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
 
                     /*@Override
                     public void onLocation(TSLocation tsLocation) {
@@ -147,7 +147,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
- public void sendPost(String urlAddress, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
+ public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
