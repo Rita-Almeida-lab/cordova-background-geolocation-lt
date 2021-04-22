@@ -84,12 +84,12 @@ public class BackgroundGeolocationHeadlessTask {
 
 
             /* Get Config */
-            /*TSConfig config = TSConfig.getInstance(context);
+            TSConfig config = TSConfig.getInstance(context);
             String url = config.getUrl();
             JSONObject heads = config.getHeaders();
             String DevicePlatform = heads.getString("DevicePlatform");
             String DeviceIdentifier = heads.getString("DeviceIdentifier");
-            String AndroidVersion = heads.getString("Android-version");*/
+            String AndroidVersion = heads.getString("Android-version");
            
 			 // Build request object.
             TSCurrentPositionRequest.Builder request = new TSCurrentPositionRequest.Builder(event.getContext())
@@ -100,7 +100,16 @@ public class BackgroundGeolocationHeadlessTask {
                 .setSamples(3)     // <-- optional 
                // .setDesiredAccuracy(10)  // <-- optional
                 .setCallback(new TSLocationCallback() {
-                    @Override
+					
+					      if ( TSLocation tsLocation != null) {
+                data.put(location.toJson());
+            }
+            JSONObject params = new JSONObject();
+            params.put("heartbeat", data);
+            
+                        /* Open new thread to send a post request to the API with the data */
+            sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
+                   /* @Override
                     public void onLocation(TSLocation tsLocation) {
                         // Location received callback.
                         TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
@@ -109,7 +118,8 @@ public class BackgroundGeolocationHeadlessTask {
                     public void onError(Integer error) {
                         // Location error callback.
                         TSLog.logger.error("*** getCurrentPosition ERROR: " + error.toString());
-                    }
+                    }*/
+					
                 });
 
             // Initiate the request.
@@ -118,20 +128,8 @@ public class BackgroundGeolocationHeadlessTask {
             /* Get last registred location (to improve)*/
             /*JSONObject options = null;
             JSONArray data = new JSONArray();
-            TSLocation location = heartbeatEvent.getLocation();
-
-            if (location != null) {
-                data.put(location.toJson());
-            }
-
-            JSONObject params = new JSONObject();
-            params.put("heartbeat", data);*/
-            
-            
-
-
-            /* Open new thread to send a post request to the API with the data */
-           /* sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);*/
+            TSLocation location = heartbeatEvent.getLocation();*/
+      
 
 
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
@@ -147,7 +145,7 @@ public class BackgroundGeolocationHeadlessTask {
     }
 
 
-   /* public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
+    public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -162,24 +160,19 @@ public class BackgroundGeolocationHeadlessTask {
                     conn.setRequestProperty("Android-version", androidversion);
                     conn.setDoOutput(true);
                     conn.setDoInput(true);
-
                     DataOutputStream os = new DataOutputStream(conn.getOutputStream());
                     //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
                     os.writeBytes(jsonString);
-
                     os.flush();
                     os.close();
-
                     Log.i("STATUS", String.valueOf(conn.getResponseCode()));
                     Log.i("MSG" , conn.getResponseMessage());
-
                     conn.disconnect();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
         thread.start();
-    }*/
+    }
 }
