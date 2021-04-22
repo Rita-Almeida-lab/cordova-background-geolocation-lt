@@ -122,7 +122,7 @@ public class BackgroundGeolocationHeadlessTask {
 	 /* Get last registred location (to improve)*/	
 		JSONObject options = null;
             JSONArray data = new JSONArray();
-          //  TSLocation location = locationEvent.getLocation();
+           TSLocation location = tsLocation;
             if (location != null) {
                 data.put(location.toJson());
             }
