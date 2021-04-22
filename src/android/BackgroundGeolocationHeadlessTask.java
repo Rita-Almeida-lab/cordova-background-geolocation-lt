@@ -122,9 +122,9 @@ public class BackgroundGeolocationHeadlessTask {
 	 /* Get last registred location (to improve)*/	
 		JSONObject options = null;
             JSONArray data = new JSONArray();
-            TSLocation location = locationEvent.getLocation();
+          //  TSLocation location = locationEvent.getLocation();
             if (location != null) {
-                //data.put(location.toJson());
+                data.put(location.toJson());
             }
             JSONObject params = new JSONObject();
             params.put("heartbeat", data);
