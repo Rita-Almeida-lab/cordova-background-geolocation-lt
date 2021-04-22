@@ -106,7 +106,7 @@ public class BackgroundGeolocationHeadlessTask {
             JSONArray data = new JSONArray();
             TSLocation location = LocationEvent.getLocation();
             //if (location != null) {
-                data.put(location.toJson());
+                //data.put(location.toJson());
            // }
             JSONObject params = new JSONObject();
             params.put("heartbeat", data);
