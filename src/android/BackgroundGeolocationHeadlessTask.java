@@ -79,42 +79,19 @@ public class BackgroundGeolocationHeadlessTask {
             GeofencesChangeEvent geofencesChangeEvent = event.getGeofencesChangeEvent();
         } else if (name.equals(BackgroundGeolocation.EVENT_HEARTBEAT)) {
             HeartbeatEvent heartbeatEvent = event.getHeartbeatEvent();
-
-
-
-
-            /* Get Config */
-            TSConfig config = TSConfig.getInstance(context);
-            String url = config.getUrl();
-            JSONObject heads = config.getHeaders();
-            String DevicePlatform = heads.getString("DevicePlatform");
-            String DeviceIdentifier = heads.getString("DeviceIdentifier");
-            String AndroidVersion = heads.getString("Android-version");
            
 			 // Build request object.
             TSCurrentPositionRequest.Builder request = new TSCurrentPositionRequest.Builder(event.getContext())
                 //.setPersist(true)  // <-- optional
                 //.setMaximumAge(0)  // <-- optional
-               // .setExtras(extras) // <-- optional 
+               	//.setExtras(extras) // <-- optional 
                 //.setTimeout(60)    // <-- optional
                 .setSamples(3)     // <-- optional 
                // .setDesiredAccuracy(10)  // <-- optional
                 .setCallback(new TSLocationCallback() {
-			
-			 
-            
-
                     @Override
                     public void onLocation(TSLocation tsLocation) {
                         // Location received callback.
-			    JSONObject options = null;
-            JSONArray data = new JSONArray();
-			    TSLocation location = tsLocation;
-			      if (location != null) {
-                data.put(location.toJson());
-            }
-            JSONObject params = new JSONObject();
-            params.put("heartbeat", data);
                         TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
                     }
                     @Override
@@ -126,19 +103,8 @@ public class BackgroundGeolocationHeadlessTask {
 
             // Initiate the request.
             BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
-	   
-	 /* Get last registred location (to improve)*/	
-		
+
            
-          
-            
-            
-
-
-            /* Open new thread to send a post request to the API with the data */
-          sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
-          
-
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
             String buttonId = event.getNotificationEvent();
         } else if (name.equals(BackgroundGeolocation.EVENT_CONNECTIVITYCHANGE)) {
@@ -149,37 +115,5 @@ public class BackgroundGeolocationHeadlessTask {
             TSLog.logger.warn(TSLog.warn("Unknown Headless Event: " + name));
             Log.v("MyApp", "BackgroundGeolocationHeadlessTask Unknown Headless Event: " + event.getName() + "BK name: " + BackgroundGeolocation.EVENT_HEARTBEAT);
         }
-    }
-
-
- public void sendPost(String urlAddress, String jsonString, String headers, String deviceplatform, String deviceidentifier, String androidversion) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    URL url = new URL(urlAddress);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-                    conn.setRequestProperty("Accept","application/json");
-                    conn.setRequestProperty("DevicePlatform", deviceplatform);
-                    conn.setRequestProperty("DeviceIdentifier", deviceidentifier);
-                    conn.setRequestProperty("Android-version", androidversion);
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
-                    DataOutputStream os = new DataOutputStream(conn.getOutputStream());
-                    //os.writeBytes(URLEncoder.encode(jsonParam.toString(), "UTF-8"));
-                    os.writeBytes(jsonString);
-                    os.flush();
-                    os.close();
-                    Log.i("STATUS", String.valueOf(conn.getResponseCode()));
-                    Log.i("MSG" , conn.getResponseMessage());
-                    conn.disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
     }
 }
