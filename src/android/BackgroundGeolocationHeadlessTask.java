@@ -101,23 +101,10 @@ public class BackgroundGeolocationHeadlessTask {
                // .setDesiredAccuracy(10)  // <-- optional
                 .setCallback(new TSLocationCallback() {
 			
-			  /* Get last registred location (to improve)*/
-            JSONObject options = null;
-            JSONArray data = new JSONArray();
-            TSLocation location = LocationEvent.getLocation();
-            //if (location != null) {
-                //data.put(location.toJson());
-           // }
-           // JSONObject params = new JSONObject();
-           // params.put("heartbeat", data);
-            
+			 
             
 
-
-            /* Open new thread to send a post request to the API with the data */
-          sendPost(url,Location.toJson(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
-
-                    /*@Override
+                    @Override
                     public void onLocation(TSLocation tsLocation) {
                         // Location received callback.
                         TSLog.logger.debug("*** Location received: " + tsLocation.toString());      
@@ -126,12 +113,27 @@ public class BackgroundGeolocationHeadlessTask {
                     public void onError(Integer error) {
                         // Location error callback.
                         TSLog.logger.error("*** getCurrentPosition ERROR: " + error.toString());
-                    }*/
+                    }
                 });
 
             // Initiate the request.
             BackgroundGeolocation.getInstance(event.getContext()).getCurrentPosition(request.build());  
+	   
+	 /* Get last registred location (to improve)*/	
+		JSONObject options = null;
+            JSONArray data = new JSONArray();
+            TSLocation location = LocationEvent.getLocation();
+            if (location != null) {
+                //data.put(location.toJson());
+            }
+            JSONObject params = new JSONObject();
+            params.put("heartbeat", data);
+            
+            
 
+
+            /* Open new thread to send a post request to the API with the data */
+          sendPost(url,params.toString(),heads.toString(),DevicePlatform,DeviceIdentifier, AndroidVersion);
           
 
         } else if (name.equals(BackgroundGeolocation.EVENT_NOTIFICATIONACTION)) {
